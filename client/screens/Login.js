@@ -7,9 +7,28 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { login } from '../redux/actions/userActions';
 
 export default function Login({ navigation }) {
+  const dispatch = useDispatch();
+
+  const [email, setEamil] = useState('madhavshuklasr3@gmail.com');
+  const [password, setPassword] = useState('123456');
+
+  const userLoginDetails = useSelector((state) => state.userLoginDetails);
+
+  const { user, loading, error } = userLoginDetails;
+
+  const loginUser = () => {
+    const config = {
+      email,
+      password,
+    };
+    dispatch(login(config));
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.text}> Login Screen For Sticky Notes</Text>
@@ -33,10 +52,7 @@ export default function Login({ navigation }) {
         />
 
         <View style={styles.btn_container}>
-          <TouchableOpacity
-            style={styles.btn}
-            onPress={() => alert('Login Works')}
-          >
+          <TouchableOpacity style={styles.btn} onPress={loginUser}>
             <Text style={styles.btn_text}>Login</Text>
           </TouchableOpacity>
           <TouchableOpacity
