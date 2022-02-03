@@ -4,15 +4,17 @@ import {
   LOGIN_SUCCESS,
 } from '../constants/userConstants';
 
-export const userLoginReducer = (state = { user: { auth: false } }, action) => {
+export const userLoginReducer = (state = { user:{} }, action) => {
   switch (action.type) {
     case LOGIN_REQUEST:
       return { loading: true };
 
     case LOGIN_SUCCESS:
-      return { loading: false, user: action.payload };
+      // console.log(action.payload.user);
+      return { loading: false, user: action.payload.user };
 
     case LOGIN_FAIL:
+      // console.log(action.payload);
       return { loading: false, error: action.payload };
 
     default:

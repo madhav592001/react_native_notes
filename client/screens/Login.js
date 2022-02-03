@@ -6,6 +6,7 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,20 +15,31 @@ import { login } from '../redux/actions/userActions';
 export default function Login({ navigation }) {
   const dispatch = useDispatch();
 
-  const [email, setEamil] = useState('madhavshuklasr3@gmail.com');
-  const [password, setPassword] = useState('123456');
+  const [email, setEamil] = useState('');
+  const [password, setPassword] = useState('');
 
   const userLoginDetails = useSelector((state) => state.userLoginDetails);
 
   const { user, loading, error } = userLoginDetails;
 
-  const loginUser = () => {
+  const loginUser =  () => {
     const config = {
       email,
       password,
     };
+    console.log(config);
+
     dispatch(login(config));
   };
+
+  if (user) {
+    console.log(user);
+    // alert('Successfull Login!!');
+  }
+
+  if (error) {
+    alert(error);
+  }
 
   return (
     <View style={styles.container}>
@@ -43,11 +55,18 @@ export default function Login({ navigation }) {
       </View>
 
       <View style={styles.login_form_container}>
-        <TextInput style={styles.input} placeholder='Email' />
+        <TextInput
+          style={styles.input}
+          value={email}
+          onChangeText={(text) => setEamil(text)}
+          placeholder='Email'
+        />
 
         <TextInput
           style={styles.input}
           placeholder='Password'
+          value={password}
+          onChangeText={(text) => setPassword(text)}
           secureTextEntry
         />
 
