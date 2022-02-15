@@ -3,7 +3,7 @@ import {
   LOGIN_REQUEST,
   LOGIN_SUCCESS,
 } from '../constants/userConstants';
-import { AsyncStorage } from 'react-native';
+import AsyncStorage  from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
 export const login = (config) => async (dispatch) => {
@@ -31,8 +31,15 @@ export const login = (config) => async (dispatch) => {
     if(res.status === 201) {
       dispatch({type:LOGIN_FAIL,payload:res.data.message})
     }
+    if(res.status === 202) {
+      dispatch({type:LOGIN_FAIL,payload:res.data.message})
+    }
 
   } catch (error) {
     console.log(error);
   }
 };
+
+export const register = (config) => async(dispatch) => {
+
+}

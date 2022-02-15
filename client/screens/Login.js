@@ -6,11 +6,12 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
-  Alert,
 } from 'react-native';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../redux/actions/userActions';
+import { useEffect } from 'react';
+import { showMessage, hideMessage } from 'react-native-flash-message';
 
 export default function Login({ navigation }) {
   const dispatch = useDispatch();
@@ -20,30 +21,44 @@ export default function Login({ navigation }) {
 
   const userLoginDetails = useSelector((state) => state.userLoginDetails);
 
-  const { user, loading, error } = userLoginDetails;
+  const { user, error } = userLoginDetails;
 
-  const loginUser =  () => {
+  useEffect(() => {
+    if (user) {
+      // console.log(user);
+
+      showMessage({
+        message: 'Login Successfull',
+        type: 'success',
+      });
+
+      navigation.navigate('Home');
+    }
+
+    if (error) {
+      // alert(error);
+      showMessage({
+        message: error,
+        type: 'danger',
+      });
+    }
+  }, [user,error]);
+
+  const loginUser = (e) => {
+    e.preventDefault();
+
     const config = {
-      email,
-      password,
+      email: email,
+      password: password,
     };
-    console.log(config);
+    // console.log(config);
 
     dispatch(login(config));
   };
 
-  if (user) {
-    console.log(user);
-    // alert('Successfull Login!!');
-  }
-
-  if (error) {
-    alert(error);
-  }
-
   return (
     <View style={styles.container}>
-      <Text style={styles.text}> Login Screen For Sticky Notes</Text>
+      <Text style={styles.text}> LGOIN FOR STICKY NOTES</Text>
 
       <View style={styles.logo_container}>
         <Image
@@ -71,14 +86,14 @@ export default function Login({ navigation }) {
         />
 
         <View style={styles.btn_container}>
-          <TouchableOpacity style={styles.btn} onPress={loginUser}>
-            <Text style={styles.btn_text}>Login</Text>
+          <TouchableOpacity style={styles.btn} onPress={(e) => loginUser(e)}>
+            <Text style={styles.btn_text}>LOGIN</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.btn}
             onPress={() => navigation.navigate('Register')}
           >
-            <Text style={styles.btn_text}>Register</Text>
+            <Text style={styles.btn_text}>REGISTER</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -90,7 +105,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: StatusBar.currentHeight,
-    backgroundColor: '#0F0E0E',
+    backgroundColor: '#2C3333',
     display: 'flex',
     justifyContent: 'center',
   },
@@ -124,7 +139,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#EEEEEE',
     padding: 10,
     marginBottom: 10,
-    borderRadius: 17,
+    borderRadius: 5,
   },
   btn_container: {
     flexDirection: 'row',
@@ -133,9 +148,10 @@ const styles = StyleSheet.create({
     marginTop: '7%',
   },
   btn: {
-    backgroundColor: '#8B9A46',
+    backgroundColor: '#2666CF',
     padding: 15,
     width: '45%',
+    borderRadius:5
   },
   btn_text: {
     color: '#EEEEEE',
