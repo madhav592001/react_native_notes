@@ -6,14 +6,51 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { register } from '../redux/actions/userActions';
+import { useDispatch, useSelector } from 'react-redux';
+import { showMessage } from 'react-native-flash-message';
 
 export default function Register() {
+  const dispatch = useDispatch();
   const [email, setEamil] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [fullName, setFullName] = useState('');
   const [userName, setUserName] = useState('');
+
+  const userRegisterDedails = useSelector((state) => state.userRegisterDetails);
+  const { user, error } = userRegisterDedails;
+  console.log(user,error)
+
+  useEffect(() => {
+    if (user) {
+      showMessage({
+        message: 'Registeration Successfull',
+        type: 'success',
+      });
+    }
+    if (error) {
+      // alert(error);
+      showMessage({
+        message: error,
+        type: 'danger',
+      });
+    }
+  }, [user, error]);
+
+  const registerUser = (e) => {
+    e.preventDefault();
+
+    const config = {
+      email: email,
+      password: password,
+      confirm_password: confirmPassword,
+      full_name: fullName,
+      user_name: userName,
+    };
+    dispatch(register(config));
+  };
 
   return (
     <View style={styles.container}>
@@ -54,10 +91,7 @@ export default function Register() {
           onChangeText={(text) => setConfirmPassword(text)}
           secureTextEntry
         />
-        <TouchableOpacity
-          style={styles.btn}
-          onPress={() => navigation.navigate('Register')}
-        >
+        <TouchableOpacity style={styles.btn} onPress={registerUser}>
           <Text style={styles.btn_text}>REGISTER</Text>
         </TouchableOpacity>
       </View>
@@ -94,17 +128,12 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     borderRadius: 5,
   },
-  btn_container: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '90%',
-    marginTop: '7%',
-  },
   btn: {
     backgroundColor: '#2666CF',
     padding: 15,
     width: '45%',
     borderRadius: 5,
+    marginTop: '10%',
   },
   btn_text: {
     color: '#EEEEEE',
