@@ -1,6 +1,8 @@
 import { View, Text } from 'react-native';
 import React from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useDispatch, useSelector } from 'react-redux';
+import { getNotes } from '../redux/actions/notesActions';
+import { useEffect } from 'react';
 
 const notes = [
   {
@@ -34,6 +36,21 @@ const notes = [
 ];
 
 export default function Home() {
+  const dispatch = useDispatch();
+
+  const notesDetails = useSelector((state) => state.notes);
+
+  useEffect(() => {
+    dispatch(getNotes());
+  }, []);
+  
+  const { loading, notes, error } = notesDetails;
+  console.log(notes);
+
+  // console.log(notes);
+
+  // AsyncStorage.getItem("jwt_token").then(jwt => console.log(jwt)) ;
+
   return (
     <View>
       <Text>Home</Text>

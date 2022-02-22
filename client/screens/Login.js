@@ -26,13 +26,11 @@ export default function Login({ navigation }) {
   useEffect(() => {
     if (user) {
       // console.log(user);
-
+      navigation.navigate('Home');
       showMessage({
         message: 'Login Successfull',
         type: 'success',
       });
-
-      navigation.navigate('Home');
     }
 
     if (error) {
@@ -42,7 +40,7 @@ export default function Login({ navigation }) {
         type: 'danger',
       });
     }
-  }, [user,error]);
+  }, [user, error]);
 
   const loginUser = (e) => {
     e.preventDefault();
@@ -151,7 +149,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#2666CF',
     padding: 15,
     width: '45%',
-    borderRadius:5
+    borderRadius: 5,
   },
   btn_text: {
     color: '#EEEEEE',

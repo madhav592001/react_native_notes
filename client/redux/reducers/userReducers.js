@@ -25,6 +25,7 @@ export const userLoginReducer = (state = { user: {} }, action) => {
     case USER_LOGOUT:
       AsyncStorage.removeItem('jwt_token');
       return { user: false, error: false };
+      
     default:
       return { user: false, error: false };
   }
